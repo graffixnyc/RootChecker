@@ -1,0 +1,27 @@
+<resources>
+
+    <style name="green" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/green</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/green</item><!-- Customize your theme using Material Design here. -->
+        <item name="colorControlActivated">@color/green</item>
+    </style>
+
+    <style name="red" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/red</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/red</item><!-- Customize your theme using Material Design here. -->
+        <item name="colorControlActivated">@color/red</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <!--   darker variant for the status bar and contextual app bars -->
+        <item name="colorPrimaryDark">@color/primary_dark</item><!-- Customize your theme using Material Design here. -->
+        <item name="colorControlActivated">@color/primary_dark</item>
+
+
+    </style>
+
+</resources>

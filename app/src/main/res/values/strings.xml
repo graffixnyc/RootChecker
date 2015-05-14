@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Simple Root Checker</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">About</string>
+    <string name="title_activity_about">About</string>
+    <string name="bb">Developed using RootTools by Stericson</string>
+    <string name="lic">https://github.com/Stericson/RootTools</string>
+    <string name="steve">Special thanks to <a href="https://plus.google.com/+SteveAlbright/posts">Steve Albright!</a></string>
+
+</resources>
