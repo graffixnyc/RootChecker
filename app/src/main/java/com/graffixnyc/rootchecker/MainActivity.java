@@ -1,8 +1,10 @@
 package com.graffixnyc.rootchecker;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -12,7 +14,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -35,7 +39,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     InterstitialAd interstitial;
     int currentapiVersion = android.os.Build.VERSION.SDK_INT;
     String rootStatus;
@@ -44,6 +48,23 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Storage Permissions
+        int REQUEST_EXTERNAL_STORAGE = 1;
+        String[] PERMISSIONS_STORAGE = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    this,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+
         AdView adView;
         adView = (AdView)findViewById(R.id.adView);
 
@@ -123,6 +144,9 @@ public class MainActivity extends ActionBarActivity {
     public void onStop() {
         super.onStop();
         displayInterstitial();
+        //File file = new File(Environment.getExternalStorageDirectory()
+        //      + File.separator + "Pictures/screenshot.png");
+        //boolean deleted = file.delete();
     }
 
     // Invoke displayInterstitial() when you are ready to display an interstitial.
@@ -136,12 +160,13 @@ public class MainActivity extends ActionBarActivity {
 
 
     public void saveSS() {
+
         View v1 = getWindow().getDecorView().getRootView();
         v1.setDrawingCacheEnabled(true);
         Bitmap myBitmap  = v1.getDrawingCache();
 
         String filePath = Environment.getExternalStorageDirectory()
-                + File.separator + "Pictures/screenshot.png";
+                + File.separator + "Pictures/root_checker_screenshot.png";
         File imagePath = new File(filePath);
         FileOutputStream fos;
         try {
@@ -161,6 +186,7 @@ public class MainActivity extends ActionBarActivity {
         } catch (IOException e) {
             Log.e("GREC", e.getMessage(), e);
         }
+
     }
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void createShareIntent(Context context, String title, String url) {
@@ -169,11 +195,12 @@ public class MainActivity extends ActionBarActivity {
         String extraText = title != null ? title + "\n\n" + url : url;
 
         //share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(ss));
-        File f = new File(Environment.getExternalStorageDirectory() + File.separator + "Pictures/screenshot.png");
+        File f = new File(Environment.getExternalStorageDirectory() + File.separator + "Pictures/root_checker_screenshot.png");
         share.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));
         share.putExtra(android.content.Intent.EXTRA_TEXT, extraText);
         share.setType("image/*");
         context.startActivity(Intent.createChooser(share, "Share using"));
+
     }
     private class PostTask extends AsyncTask<String, Integer, String>
         {
@@ -204,8 +231,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
 
-
-        @Override
+            @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             final TextView tvRoot=(TextView)findViewById(R.id.tvRoot);
@@ -213,9 +239,9 @@ public class MainActivity extends ActionBarActivity {
             ImageView imgView = (ImageView) findViewById(R.id.imageView);
             //int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
-            Drawable colorDrawable1 = new ColorDrawable(getResources().getColor(R.color.green));
-            Drawable colorDrawable2 = new ColorDrawable(getResources().getColor(R.color.red));
-            Drawable colorDrawable3 = new ColorDrawable(getResources().getColor(R.color.yellow));
+                Drawable colorDrawable1 = new ColorDrawable(ContextCompat.getColor(MainActivity.this, R.color.green));
+                Drawable colorDrawable2 = new ColorDrawable(ContextCompat.getColor(MainActivity.this, R.color.red));
+                Drawable colorDrawable3 = new ColorDrawable(ContextCompat.getColor(MainActivity.this, R.color.yellow));
 
             if (RootAccess==1)
                     {
@@ -225,8 +251,8 @@ public class MainActivity extends ActionBarActivity {
 
                         if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP)
                             {
-                                getWindow().setNavigationBarColor(getResources().getColor(R.color.darkgreen));
-                                getWindow().setStatusBarColor(getResources().getColor(R.color.darkgreen));
+                                getWindow().setNavigationBarColor(ContextCompat.getColor(MainActivity.this, R.color.darkgreen));
+                                getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.darkgreen));
                             }
                         getSupportActionBar().setBackgroundDrawable(colorDrawable1);
                     }
@@ -236,8 +262,8 @@ public class MainActivity extends ActionBarActivity {
                         rootStatus=   "No root for me! :(  Damn it, I needz rootz for the " + Build.MANUFACTURER + " " + Build.MODEL + " running Android version " + Build.VERSION.RELEASE + "!";
                         imgView.setImageResource(R.drawable.logored);
                         if (currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
-                            getWindow().setNavigationBarColor(getResources().getColor(R.color.darkred));
-                            getWindow().setStatusBarColor(getResources().getColor(R.color.darkred));
+                            getWindow().setNavigationBarColor(ContextCompat.getColor(MainActivity.this, R.color.darkred));
+                            getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.darkred));
                         }
                         getSupportActionBar().setBackgroundDrawable(colorDrawable2);
                     }
